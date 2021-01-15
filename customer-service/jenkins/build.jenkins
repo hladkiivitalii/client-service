@@ -1,0 +1,46 @@
+#!groovy
+// Run docker build
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+        label 'master'
+        }
+    triggers { pollSCM('* * * * *')}
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage("docker login") {
+            steps {
+                echo "============ Docker login ============"
+            }
+        }
+        stage("create docker image") {
+            steps {
+                echo " ============== start building image =================="
+                	sh ' sudo docker build -t localhost:5000/client-service:latest . '
+            }
+        }
+        stage("Docker push") {
+            steps {
+                echo " ============== push docker image =================="
+                sh '''
+                sudo docker push localhost:5000/client-service:latest
+                '''
+            }
+        }
+        stage("Run Image") {
+            steps {
+                echo " ============== run docker image on server =================="
+                sh '''
+                docker stop client-service
+                '''
+                sh '''
+                docker run -p 82:80 -d --name purchase-service  --rm client-service:latest
+                '''
+            }
+        }
+    }
+}
