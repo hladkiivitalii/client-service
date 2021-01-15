@@ -20,14 +20,14 @@ pipeline {
         stage("create docker image") {
             steps {
                 echo " ============== start building image =================="
-                	sh ' sudo docker build -t localhost:5000/client-service:latest . '
+                	sh ' sudo docker build -t client-service:latest . '
             }
         }
         stage("Docker push") {
             steps {
                 echo " ============== push docker image =================="
                 sh '''
-                sudo docker push localhost:5000/client-service:latest
+                sudo docker push client-service:latest
                 '''
             }
         }
