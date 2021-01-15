@@ -20,7 +20,7 @@ pipeline {
         stage("create docker image") {
             steps {
                 echo " ============== start building image =================="
-                	sh ' sudo docker build -t client-service:latest . '
+                	sh ' sudo docker build -t client-service:latest customer-service/ '
             }
         }
         stage("Docker push") {
