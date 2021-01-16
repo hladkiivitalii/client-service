@@ -23,14 +23,6 @@ pipeline {
                 	sh ' sudo docker build -t client-service:latest customer-service/ '
             }
         }
-        stage("Docker push") {
-            steps {
-                echo " ============== push docker image =================="
-                sh '''
-                sudo docker push client-service:latest
-                '''
-            }
-        }
         stage("Run Image") {
             steps {
                 echo " ============== run docker image on server =================="
