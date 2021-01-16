@@ -27,7 +27,7 @@ pipeline {
             steps {
                 echo " ============== run docker image on server =================="
                 sh '''
-                sudo docker stop client-service:latest
+                sudo docker stop client-service
                 '''
                 sh '''
                 sudo docker run -p 82:80 -d --name client-service  --rm client-service:latest
